@@ -40,7 +40,7 @@ public class UrlService {
 
         String shortUrl=""+generateHash(originalUrl);
         redisTemplate.opsForValue().set(shortUrl,originalUrl,EXPIRATIOIN_DAY, TimeUnit.DAYS);
-        return "http://localhost:8087/"+shortUrl;
+        return "https://urlshortnerbackend-vmdu.onrender.com/"+shortUrl;
     }
     public String getOriginalUrl(String shortUrl){
 
