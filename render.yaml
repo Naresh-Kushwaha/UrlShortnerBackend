@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: url-shortner
+    env: java
+    plan: free
+    buildCommand: mvnw clean package
+    startCommand: java -jar target/*.jar
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SPRING_REDIS_HOST
+        value: redis
+      - key: SPRING_REDIS_PORT
+        value: "6379"
+
+  - type: redis
+    name: redis
+    plan: free

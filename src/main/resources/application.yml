@@ -1,0 +1,10 @@
+spring:
+  application:
+  name: UrlShortner
+  redis:
+    host: redis://red-ctkjujq3esus73e8nnag
+    port: 6379
+
+server:
+  port: 8087
+
