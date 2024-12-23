@@ -2,7 +2,7 @@ spring:
   application:
   name: UrlShortner
   redis:
-    host: redis://red-ctkjujq3esus73e8nnag
+    host: redis://red-ctknilq3esus73e9qtfg
     port: 6379
 
 server:
