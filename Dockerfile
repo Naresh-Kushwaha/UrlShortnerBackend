@@ -9,5 +9,5 @@ EXPOSE 8080
 
 ENTRYPOINT ["java","-jar","UrlShortner.jar"]
 
-ENTRYPOINT ["java","-jar","UrlShortner.jar"]
+
 
