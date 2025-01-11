@@ -26,8 +26,8 @@ public class UrlController {
     public void redirectToOriginalUrl(@PathVariable String shortUrl,HttpServletResponse response ) throws IOException {
       String s=urlService.getOriginalUrl(shortUrl);
 
-      System.out.println(s);
         response.sendRedirect(s);
+        System.out.println(s);
 
     }
 

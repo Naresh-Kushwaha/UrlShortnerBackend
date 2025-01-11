@@ -1,6 +1,7 @@
 package com.naresh.UrlShortner;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class UrlService {
-
+    @Value("${backend.url}")
+    private String url;
     private final RedisTemplate<String,String> redisTemplate;
     private final AtomicInteger counter=new AtomicInteger(0);
     private static final int EXPIRATIOIN_DAY=7;
@@ -38,9 +40,10 @@ public class UrlService {
     }
     public String shortenUrl(String originalUrl){
 
-        String shortUrl=""+generateHash(originalUrl);
+
+        var shortUrl=generateHash(originalUrl);
         redisTemplate.opsForValue().set(shortUrl,originalUrl,EXPIRATIOIN_DAY, TimeUnit.DAYS);
-        return "https://urlshortnerbackend-vmdu.onrender.com/"+shortUrl;
+        return url+shortUrl;
     }
     public String getOriginalUrl(String shortUrl){
 
