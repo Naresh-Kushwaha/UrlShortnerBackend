@@ -13,11 +13,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class UrlService {
-    @Value("${backend.url}")
-    private String url;
+
     private final RedisTemplate<String,String> redisTemplate;
     private final AtomicInteger counter=new AtomicInteger(0);
     private static final int EXPIRATIOIN_DAY=7;
+    @Value("${backend.url}")
+    String url;
 
     public  String generateHash(String input) {
         try {
@@ -40,10 +41,9 @@ public class UrlService {
     }
     public String shortenUrl(String originalUrl){
 
-
-        var shortUrl=generateHash(originalUrl);
+        String shortUrl=url+generateHash(originalUrl);
         redisTemplate.opsForValue().set(shortUrl,originalUrl,EXPIRATIOIN_DAY, TimeUnit.DAYS);
-        return url+shortUrl;
+        return shortUrl;
     }
     public String getOriginalUrl(String shortUrl){
 

@@ -2,7 +2,7 @@ spring:
   application:
      name: UrlShortner
   redis:
-    url: redis://red-ctknilq3esus73e9qtfg:6379
+    url: redis://red-cu10r5rqf0us73d52sk0:6379
 
 
 
@@ -11,5 +11,5 @@ server:
     port: 8080
 
 backend:
-  url: http://localhost:8080/
+   url: http://localhost:8080/
 
