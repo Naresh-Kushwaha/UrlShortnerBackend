@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -48,7 +49,7 @@ public class UrlService {
         repo.save( UrlEntity.builder()
                 .shortUrl(shortUrl)
                 .longUrl(originalUrl)
-                .createdAt(LocalDateTime.now())
+                .createdAt(LocalDate.now())
                 .build());
         return url+shortUrl;
     }

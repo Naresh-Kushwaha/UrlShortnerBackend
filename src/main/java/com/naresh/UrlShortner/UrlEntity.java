@@ -6,22 +6,22 @@ import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.annotation.processing.Generated;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
 @Document
 @Builder
-
 public class UrlEntity {
     @Id
     private String shortUrl;
     private String longUrl;
-    @CreatedDate
-//    @Column(updatable=false,nullable=false)
-    private LocalDateTime createdAt;
+    @Indexed( expireAfter = "30d")
+    private LocalDate createdAt;
 
 
 }
