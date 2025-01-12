@@ -35,7 +35,7 @@ public class UrlService {
                 if (hex.length() == 1) hexString.append('0');
                 hexString.append(hex);
             }
-            return hexString.toString().substring(0,4);
+            return hexString.toString().substring(0,4)+counter.incrementAndGet();
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Error generating hash", e);
         }
