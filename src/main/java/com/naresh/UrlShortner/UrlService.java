@@ -1,6 +1,7 @@
 package com.naresh.UrlShortner;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -8,15 +9,18 @@ import org.springframework.stereotype.Service;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
+@RequiredArgsConstructor
 public class UrlService {
-
+    private final Repo repo;
     private final RedisTemplate<String,String> redisTemplate;
     private final AtomicInteger counter=new AtomicInteger(0);
-    private static final int EXPIRATIOIN_DAY=7;
+    private static final int EXPIRATIOIN_DAYS=3;
     @Value("${backend.url}")
     String url;
 
@@ -36,17 +40,26 @@ public class UrlService {
         }
     }
 
-    public UrlService(RedisTemplate<String, String> redisTemplate) {
-        this.redisTemplate = redisTemplate;
-    }
     public String shortenUrl(String originalUrl){
 
-        String shortUrl=url+generateHash(originalUrl);
-        redisTemplate.opsForValue().set(shortUrl,originalUrl,EXPIRATIOIN_DAY, TimeUnit.DAYS);
-        return shortUrl;
+        String shortUrl=generateHash(originalUrl);
+        redisTemplate.opsForValue().set(shortUrl,originalUrl,EXPIRATIOIN_DAYS, TimeUnit.DAYS);
+        repo.save( UrlEntity.builder()
+                .shortUrl(shortUrl)
+                .longUrl(originalUrl)
+                .createdAt(LocalDateTime.now())
+                .build());
+        return url+shortUrl;
     }
     public String getOriginalUrl(String shortUrl){
 
-        return redisTemplate.opsForValue().get(shortUrl);
+      String orinalUrl=  redisTemplate.opsForValue().get(shortUrl);
+      if(orinalUrl==null){
+          System.out.println("datafrom mongodb");
+          orinalUrl=repo.findById(shortUrl).get().getLongUrl();
+          redisTemplate.opsForValue().set(shortUrl,orinalUrl,EXPIRATIOIN_DAYS, TimeUnit.DAYS);
+      }
+      System.out.println("Redis");
+        return orinalUrl ;
     }
 }
