@@ -19,12 +19,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class UrlService {
     private final Repo repo;
     private final RedisTemplate<String,String> redisTemplate;
-    private final AtomicInteger counter=new AtomicInteger(0);
-    private static final int EXPIRATIOIN_DAYS=3;
+    private  AtomicInteger counter=new AtomicInteger(0);
+    private static final int EXPIRATIOIN_DAYS=1;
     @Value("${backend.url}")
     String url;
 
     public  String generateHash(String input) {
+
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
@@ -34,7 +35,7 @@ public class UrlService {
                 if (hex.length() == 1) hexString.append('0');
                 hexString.append(hex);
             }
-            return hexString.toString().substring(0,5);
+            return hexString.toString().substring(0,4);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Error generating hash", e);
         }
@@ -59,7 +60,7 @@ public class UrlService {
           orinalUrl=repo.findById(shortUrl).get().getLongUrl();
           redisTemplate.opsForValue().set(shortUrl,orinalUrl,EXPIRATIOIN_DAYS, TimeUnit.DAYS);
       }
-      System.out.println("Redis");
+
         return orinalUrl ;
     }
 }
