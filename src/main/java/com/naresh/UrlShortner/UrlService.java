@@ -57,7 +57,7 @@ public class UrlService {
 
       String orinalUrl=  redisTemplate.opsForValue().get(shortUrl);
       if(orinalUrl==null){
-          System.out.println("datafrom mongodb");
+          System.out.println("data from mongodb");
           orinalUrl=repo.findById(shortUrl).get().getLongUrl();
           redisTemplate.opsForValue().set(shortUrl,orinalUrl,EXPIRATIOIN_DAYS, TimeUnit.DAYS);
       }

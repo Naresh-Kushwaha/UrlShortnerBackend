@@ -18,14 +18,11 @@ public class UrlController {
 
     @PostMapping("/shorten")
     public String shortenUrl(@RequestBody String url){
-
-
         return urlService.shortenUrl(url);
     }
     @GetMapping("/{shortUrl}")
     public void redirectToOriginalUrl(@PathVariable String shortUrl,HttpServletResponse response ) throws IOException {
       String s=urlService.getOriginalUrl(shortUrl);
-        System.out.println(s);
         response.sendRedirect(s);
 
 
